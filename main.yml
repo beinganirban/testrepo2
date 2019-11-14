@@ -41,6 +41,5 @@
   hosts: apps
   gather_facts: false
   become: true
-  hosts: apps
   roles:
   - deploy_apache
