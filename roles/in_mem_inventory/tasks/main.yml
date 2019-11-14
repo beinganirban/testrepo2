@@ -1,0 +1,10 @@
+---
+# tasks file for in_mem_inventory
+- os_server_facts:
+    cloud: ospcloud
+
+- add_host:
+    name: "{{ item.public_v4 }}"
+    groups: "{{ item.metadata.group }}"
+  loop: "{{ openstack_servers }}"
+

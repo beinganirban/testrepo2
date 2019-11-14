@@ -1,0 +1,32 @@
+---
+# tasks file for deploy_postgres
+
+- name: install progress
+  yum:
+    name: postgresql-server
+    state: latest
+
+- name: enable postgresql at boot
+  service:
+    name: postgresql
+    enabled: yes
+
+- name: tell user to finish setting up postgres
+  debug:
+    msg: "Either uncomment the postgres setup or manually login and initialize"
+
+
+- name: Cheking for PG_VERSION file
+  stat:
+    path: /var/lib/pgsql/data/PG_VERSION
+  register: pgsql_stat
+
+- name: initilize postgres
+  command: postgresql-setup initdb
+  when: not pgsql_stat.stat.exists 
+  
+- name: start postgres
+  service:
+    name: postgresql
+    state: started
+  

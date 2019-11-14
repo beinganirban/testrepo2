@@ -1,0 +1,46 @@
+---
+- name: in memory inventory
+  hosts: workstation
+  gather_facts: false
+  become: true
+  roles:
+  -  in_mem_inventory 
+
+
+- name: configuration
+  hosts: all
+  gather_facts: false
+  become: true
+  roles: 
+  - three-tier-app_repo
+
+- name: deploy haproxy
+  hosts: frontend
+  gather_facts: false
+  become: true
+  roles:
+  - deploy_haproxy
+
+- name: deploy tomcat
+  hosts: apps
+  gather_facts: false
+  become: true
+  roles:
+  - deploy_tomcat
+
+
+- name: deploy postgres
+  hosts: appdbs
+  gather_facts: false
+  become: true
+  roles:
+  - deploy_postgres
+
+
+- name: deploy apache
+  hosts: apps
+  gather_facts: false
+  become: true
+  hosts: apps
+  roles:
+  - deploy_apache
